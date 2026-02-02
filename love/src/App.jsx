@@ -15,7 +15,8 @@ function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+// सीधा Render का लिंक (ताकि कोई कन्फ्यूजन न रहे)
+const API_BASE = "https://tracker-om85.onrender.com/api";
 // --- MAIN APP COMPONENT ---
 export default function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
