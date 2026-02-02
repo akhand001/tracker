@@ -1,0 +1,55 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+```
+
+### **Step 2: Deploy the Backend (Render)**
+
+Since Netlify cannot host a running Node.js server (it only does serverless functions), we must host the backend on Render first.
+
+1.  **Push to GitHub:**
+    * Make sure your project (`server` and `love` folders) is pushed to a GitHub repository.
+2.  **Go to [Render.com](https://render.com/):**
+    * Create an account and click **"New"** > **"Web Service"**.
+    * Connect your GitHub repository.
+3.  **Configure Render:**
+    * **Root Directory:** `server` (This is critical!).
+    * **Build Command:** `npm install`
+    * **Start Command:** `node server.js`
+    * **Environment Variables:** Add your secrets here:
+        * `MONGO_URI`: (Your MongoDB Atlas connection string)
+        * `JWT_SECRET`: (Your secret key)
+4.  **Deploy:** Click "Create Web Service".
+5.  **Copy URL:** Once deployed, copy your backend URL (e.g., `https://neet-pg-backend.onrender.com`).
+
+### **Step 3: Deploy the Frontend (Netlify)**
+
+Now we connect your React app to Netlify and point it to your live backend.
+
+1.  **Go to [Netlify.com](https://www.netlify.com/):**
+    * Log in and click **"Add new site"** > **"Import from existing project"**.
+2.  **Connect GitHub:**
+    * Select your repository.
+3.  **Configure Build Settings:**
+    * **Base directory:** `love` (Important!)
+    * **Build command:** `npm run build`
+    * **Publish directory:** `dist`
+4.  **Add Environment Variable:**
+    * Click on **"Show advanced"** or go to **"Site settings"** > **"Environment variables"**.
+    * Add a new variable:
+        * **Key:** `VITE_API_URL`
+        * **Value:** Paste your Render Backend URL + `/api` (e.g., `https://neet-pg-backend.onrender.com/api`)
+5.  **Deploy:** Click **"Deploy Site"**.
+
+### **Step 4: Update Your Code (One Check)**
+
+Ensure your `love/src/App.jsx` has the dynamic API base configuration I provided in the previous step. It should look like this:
+
+```javascript
+// This line automatically switches between Localhost (for your PC) and the Cloud (when deployed)
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api";

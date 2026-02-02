@@ -1,0 +1,23 @@
+ @import "tailwindcss";
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-900 font-sans;
+  }
+}
+
+.glass-card {
+  @apply bg-white/80 backdrop-blur-lg border border-white/20 shadow-xl rounded-2xl;
+}
+
+.btn-primary {
+  @apply bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-lg font-medium transition-all shadow-lg shadow-sky-500/30 active:scale-95;
+}
+
+.badge-hy {
+  @apply bg-rose-100 text-rose-700 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider border border-rose-200;
+}
+
+.badge-pyq {
+  @apply bg-amber-100 text-amber-700 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider border border-amber-200;
+}
