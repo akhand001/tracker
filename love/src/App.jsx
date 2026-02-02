@@ -15,8 +15,7 @@ function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 
-const API_BASE = "http://localhost:5000/api";
-
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 // --- MAIN APP COMPONENT ---
 export default function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
