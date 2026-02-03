@@ -183,3 +183,25 @@ mongoose.connect(MONGO_URI)
     app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
   })
   .catch(err => console.error('❌ Database Connection Error:', err));
+
+  const Question = require('./models/Question');
+
+// server/server.js ke andar
+const Question = require('./models/Question'); // Model import karna na bhulein
+
+// NEET PG Random Questions Fetch karne ka Route
+app.get('/api/questions/random', async (req, res) => {
+  try {
+    // aggregate use karke MongoDB Atlas se random 10 questions uthayenge
+    const questions = await Question.aggregate([{ $sample: { size: 10 } }]);
+    
+    if (!questions || questions.length === 0) {
+      return res.status(404).json({ message: "Database mein questions nahi mile" });
+    }
+    
+    res.json(questions);
+  } catch (error) {
+    console.error("Quiz Fetch Error:", error);
+    res.status(500).json({ message: "Server error: Questions fetch nahi ho paye" });
+  }
+});
