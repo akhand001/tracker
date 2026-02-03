@@ -1,14 +1,16 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'); // Is line ko sabse upar add karein
 
 const questionSchema = new mongoose.Schema({
+  id: String,
   question: String,
-  op_a: String,
-  op_b: String,
-  op_c: String,
-  op_d: String,
+  opa: String,
+  opb: String,
+  opc: String,
+  opd: String,
   cop: Number,
   exp: String,
-  subject_name: String
+  subject_name: String,
+  topic_name: String
 });
 
 module.exports = mongoose.model('Question', questionSchema);

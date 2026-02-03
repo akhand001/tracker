@@ -14,7 +14,8 @@ const User = require('./models/User');
 const Subject = require('./models/Syllabus'); 
 const Progress = require('./models/UserProgress');
 const Target = require('./models/Target'); // NEW MODEL
-
+// server.js ke upar check karein
+const Question = require('./models/Question');
 const app = express();
 
 // --- MIDDLEWARE ---
@@ -184,24 +185,13 @@ mongoose.connect(MONGO_URI)
   })
   .catch(err => console.error('❌ Database Connection Error:', err));
 
-  const Question = require('./models/Question');
 
-// server/server.js ke andar
-const Question = require('./models/Question'); // Model import karna na bhulein
-
-// NEET PG Random Questions Fetch karne ka Route
-app.get('/api/questions/random', async (req, res) => {
+app.get('/api/questions', async (req, res) => {
   try {
-    // aggregate use karke MongoDB Atlas se random 10 questions uthayenge
-    const questions = await Question.aggregate([{ $sample: { size: 10 } }]);
-    
-    if (!questions || questions.length === 0) {
-      return res.status(404).json({ message: "Database mein questions nahi mile" });
-    }
-    
+    const questions = await Question.find();
+    console.log("Questions found:", questions.length); // Debugging ke liye
     res.json(questions);
-  } catch (error) {
-    console.error("Quiz Fetch Error:", error);
-    res.status(500).json({ message: "Server error: Questions fetch nahi ho paye" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
