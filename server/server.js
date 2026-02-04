@@ -15,7 +15,6 @@ const Subject = require('./models/Syllabus');
 const Progress = require('./models/UserProgress');
 const Target = require('./models/Target'); // NEW MODEL
 // server.js ke upar check karein
-const Question = require('./models/Question');
 const app = express();
 
 // --- MIDDLEWARE ---
@@ -185,13 +184,22 @@ mongoose.connect(MONGO_URI)
   })
   .catch(err => console.error('❌ Database Connection Error:', err));
 
+const Question = require('./models/Question'); // Verify this path matches your file structure
 
-app.get('/api/questions', async (req, res) => {
+// --- ADD THIS ROUTE ---
+app.get('/api/questions/random', async (req, res) => {
   try {
-    const questions = await Question.find();
-    console.log("Questions found:", questions.length); // Debugging ke liye
+    // Get 10 random questions from MongoDB
+    const questions = await Question.aggregate([{ $sample: { size: 10 } }]);
+    
+    if (!questions || questions.length === 0) {
+      return res.status(404).json({ message: "No questions found. Please run seed.js first." });
+    }
+    
     res.json(questions);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+  } catch (error) {
+    console.error("Error fetching quiz questions:", error);
+    res.status(500).json({ message: "Server Error", error: error.message });
   }
 });
+// ----------------------

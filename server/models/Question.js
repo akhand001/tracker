@@ -1,13 +1,13 @@
-const mongoose = require('mongoose'); // Is line ko sabse upar add karein
+const mongoose = require('mongoose');
 
 const questionSchema = new mongoose.Schema({
   id: String,
-  question: String,
-  opa: String,
-  opb: String,
-  opc: String,
-  opd: String,
-  cop: Number,
+  question: { type: String, required: true },
+  opa: { type: String, required: true },
+  opb: { type: String, required: true },
+  opc: { type: String, required: true },
+  opd: { type: String, required: true },
+  cop: { type: Number, required: true },
   exp: String,
   subject_name: String,
   topic_name: String
