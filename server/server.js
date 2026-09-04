@@ -10,11 +10,12 @@ app.use(cors());
 app.use(express.json());
 
 // Models
-const Subject = require('./models/Syllabus'); // Jo aapke seed.js me use hua tha
+const Subject = require('./models/Syllabus'); 
 const UserProgress = require('./models/UserProgress');
 const ErrorBook = require('./models/ErrorBook');
 
 // MongoDB Connection
+// Note: It's safer to keep credentials strictly inside your .env file in production
 const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://djsammy0342_db_user:P4gdPeBihyT0Wlbg@cluster0.raifmjf.mongodb.net/neetpg?appName=Cluster0";
 
 mongoose.connect(MONGO_URI)
@@ -144,7 +145,9 @@ app.post('/api/error-book', async (req, res) => {
 app.post('/api/error-book/:id/reviewed', async (req, res) => {
   try {
     const { isCorrect } = req.body;
-    const intervals =; // Days interval
+    
+    // FIXED: Added the actual interval values
+    const intervals = [1, 3, 7, 14, 30, 60]; 
 
     const errorItem = await ErrorBook.findById(req.params.id);
     if (!errorItem) return res.status(404).json({ error: 'Item not found' });
